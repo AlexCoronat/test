@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/products")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
 public class ProductController {
     private final ProductServiceImpl productService;
     private static final Logger log = LoggerFactory.getLogger(ProductController.class);
@@ -30,20 +31,16 @@ public class ProductController {
 
     @PostMapping("/new")
     public ResponseEntity<ProductDTO> create(@RequestBody ProductDTO productDTO) {
-        try {
+//        try {
             return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(productDTO));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+//        }
 
     }
 
     @PatchMapping("/{id_product}")
     public ResponseEntity<ProductDTO> update(@PathVariable Integer id_product, @RequestBody ProductDTO productDTO) {
-        try {
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(productService.update(id_product, productDTO));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(productService.update(id_product, productDTO));
     }
 }

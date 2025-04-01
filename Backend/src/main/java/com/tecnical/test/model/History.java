@@ -20,6 +20,7 @@ public class History {
     @ManyToOne
     @JoinColumn(name = "id_user")
     User user;
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
     @PrePersist
     private void onCreate(){

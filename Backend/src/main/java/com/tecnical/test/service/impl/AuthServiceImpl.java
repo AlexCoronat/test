@@ -10,6 +10,8 @@ import com.tecnical.test.repository.UserRepository;
 import com.tecnical.test.service.AuthService;
 import com.tecnical.test.service.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,9 +26,11 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final RolRepository rolRepository;
-
+    private static final Logger log = LoggerFactory.getLogger(AuthServiceImpl.class);
 
     public AuthResponse login(LoginRequest request) {
+        log.info(request.getEmail());
+        log.info(request.getPassword());
         User user = userRepository.findByEmail(request.getEmail());
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getName(), request.getPassword()));
         UserDetails userDetail=userRepository.findByEmail(request.getEmail());

@@ -1,0 +1,18 @@
+/* Estilos CSS */
+.filter-container {
+  display: flex;
+  justify-content: flex-start;
+  margin: 20px 0;
+  margin-left: 5%;
+}
+
+.table-container {
+  width: 100%;
+  max-width: 90%;
+  margin: 0 auto;
+  overflow-x: auto;
+}
+
+.table-container table {
+  width: 100%;
+}

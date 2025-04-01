@@ -7,7 +7,7 @@ import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = PermissionMapper.class)
+@Mapper(componentModel = "spring", uses = PermissionMapper.class)
 public interface HistoryMapper {
     HistoryDTO toHistoryDTO(History history);
     History toHistory(HistoryDTO historyDTO);

@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/history")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
 public class HistoryController {
     private final HistoryService historyService;
     private final HistoryMapper historyMapper;

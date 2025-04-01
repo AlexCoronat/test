@@ -9,10 +9,12 @@ import com.tecnical.test.service.HistoryService;
 import com.tecnical.test.service.ProductService;
 import com.tecnical.test.util.KeyPermissions;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
@@ -33,6 +35,9 @@ public class ProductServiceImpl implements ProductService {
     }
     @Override
     public ProductDTO save(ProductDTO productDTO){
+        for(String permission : permissionService.getKeyPermissions()){
+            log.info(permission);
+        }
         if (!permissionService.getKeyPermissions().contains(keyPermissions.ADD_PRODUCT)) {
             throw new RuntimeException("No tiene permisos para esta operacion");
         }
@@ -51,36 +56,23 @@ public class ProductServiceImpl implements ProductService {
                 if(productDTO.getPrice() != null){
                     product.setPrice(productDTO.getPrice());
                 }
-                // Se verifican los permisos del usuario logeado
                 if (productDTO.getStock() != null) {
-                    List<String> userPermissions = permissionService.getKeyPermissions();
                     if (productDTO.getStock() < product.getStock()) {
-                        if (!userPermissions.contains(KeyPermissions.OUT_INVENTORY)) {
-                            throw new RuntimeException("No tiene permisos para esta operacion");
-                        }
                         type = "Salida";
                     } else if (productDTO.getStock() > product.getStock()) {
-                        if (!userPermissions.contains(KeyPermissions.ADD_INVENTORY)) {
-                            throw new RuntimeException("No tiene permisos para esta operacion");
-                        }
                         type = "Entrada";
                     }
                     product.setStock(productDTO.getStock());
+                    History history = new History();
+                    history.setType(type);
+                    history.setUser(permissionService.getUserDetails());
+                    historyService.save(history);
                 }
-                if(productDTO.isStatus() != product.isStatus()){
-                    if(!permissionService.getKeyPermissions().contains(keyPermissions.ACTIVATE_DEACTIVATE_PRODUCT)){
-                        throw new RuntimeException("No tiene permisos para esta operacion");
-                    }
                     product.setStatus(productDTO.isStatus());
-                }
             }
         }else {
             product = productMapper.toProduct(productDTO);
         }
-        History history = new History();
-        history.setType(type);
-        history.setUser(permissionService.getUserDetails());
-        historyService.save(history);
         return productMapper.toProductDTO(productRepository.save(product));
     }
 }

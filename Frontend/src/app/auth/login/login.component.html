@@ -1,0 +1,19 @@
+<div class="login-container">
+  <mat-card appearance="outlined">
+    <mat-card-content>
+      <form>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Correo</mat-label>
+          <input matInput placeholder="Ingresa tu correo" [(ngModel)]="loginData.email" name="email">
+          <mat-icon matSuffix>mail</mat-icon>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Contraseña</mat-label>
+          <input matInput placeholder="Ingresa tu contraseña" [(ngModel)]="loginData.password" name="password" type="password">
+          <mat-icon matSuffix>lock</mat-icon>
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit" (click)="onLogin()">Ingresar</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
